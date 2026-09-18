@@ -1,0 +1,372 @@
+<title>口语练习 隐私政策</title>
+<style>
+  :root {
+    --ground: #FAFAFC;
+    --surface: #FFFFFF;
+    --ink: #171A23;
+    --muted: #5A6072;
+    --accent: #3B45A6;
+    --hairline: #E6E8F0;
+    --table-head: #F3F4F9;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --ground: #12141B;
+      --surface: #191C25;
+      --ink: #E8EAF2;
+      --muted: #9AA0B4;
+      --accent: #8D96F0;
+      --hairline: #272B38;
+      --table-head: #202533;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #12141B;
+    --surface: #191C25;
+    --ink: #E8EAF2;
+    --muted: #9AA0B4;
+    --accent: #8D96F0;
+    --hairline: #272B38;
+    --table-head: #202533;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+                 "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .bar {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: saturate(160%) blur(12px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .bar-inner {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .wordmark { font-size: 14px; font-weight: 600; letter-spacing: .01em; }
+  .wordmark span { color: var(--muted); font-weight: 400; }
+
+  .langs { display: flex; gap: 2px; border: 1px solid var(--hairline); border-radius: 999px; padding: 2px; background: var(--surface); }
+  .langs button {
+    appearance: none; border: 0; background: transparent; cursor: pointer;
+    font: inherit; font-size: 13px; line-height: 1.6;
+    color: var(--muted); padding: 3px 12px; border-radius: 999px;
+  }
+  .langs button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  .langs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  main { max-width: 46rem; margin: 0 auto; padding-inline: 20px; padding-block: 28px 72px; }
+
+  h1 { font-size: 27px; line-height: 1.3; margin: 0 0 6px; text-wrap: balance; letter-spacing: -.01em; }
+  h2 {
+    font-size: 19px; line-height: 1.4; margin: 44px 0 12px; text-wrap: balance;
+    padding-top: 22px; border-top: 1px solid var(--hairline);
+  }
+  h3 { font-size: 16px; margin: 26px 0 8px; color: var(--accent); }
+  p, li { margin: 10px 0; }
+  ul { padding-left: 1.25em; }
+  strong { font-weight: 640; }
+  a { color: var(--accent); }
+
+  .meta {
+    display: grid; grid-template-columns: auto 1fr; gap: 4px 14px;
+    margin: 18px 0 0; padding: 14px 16px;
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px;
+    font-size: 14px; font-variant-numeric: tabular-nums;
+  }
+  .meta dt { color: var(--muted); }
+  .meta dd { margin: 0; }
+
+  .lede {
+    margin: 22px 0 0; padding: 16px 18px;
+    background: var(--surface); border: 1px solid var(--hairline);
+    border-left: 3px solid var(--accent); border-radius: 4px 10px 10px 4px;
+  }
+  .lede p { margin: 0; }
+
+
+
+  .scroll { overflow-x: auto; margin: 14px 0; border: 1px solid var(--hairline); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: 14.5px; background: var(--surface); }
+  th, td { text-align: left; vertical-align: top; padding: 11px 14px; border-bottom: 1px solid var(--hairline); }
+  thead th { background: var(--table-head); font-weight: 600; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: 0; }
+
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; }
+
+  .foot { margin-top: 52px; padding-top: 20px; border-top: 1px solid var(--hairline); color: var(--muted); font-size: 14px; }
+
+  [data-lang="en"] .zh, [data-lang="zh"] .en { display: none; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="wordmark">口语练习 <span>Spoken English Practice</span></div>
+    <div class="langs" role="group" aria-label="语言 / Language">
+      <button id="btn-zh" type="button" aria-pressed="true">中文</button>
+      <button id="btn-en" type="button" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</div>
+
+<main id="doc" data-lang="zh">
+
+  <!-- ─────────── 中文 ─────────── -->
+  <div class="zh">
+    <h1>「口语练习」隐私政策</h1>
+
+    <dl class="meta">
+      <dt>最后更新</dt><dd>2026年9月19日</dd>
+      <dt>开发者</dt><dd>独立开发者</dd>
+      <dt>联系方式</dt><dd><a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a></dd>
+    </dl>
+
+
+    <div class="lede">
+      <p><strong>一句话概括</strong>：本 App 不需要注册登录，不追踪你，不投放广告，不接入统计或广告 SDK。你的段落和练习记录保存在你自己的手机上；只有在你同意之后，录音、段落文字和查词内容才会为了完成对应功能发给下面列出的服务方。</p>
+    </div>
+
+    <p>「口语练习」（下称「本 App」）是一个英语口语背诵练习工具。本政策说明本 App 会处理哪些数据、为什么处理、发给了谁、保存多久，以及你怎样撤回同意或要求删除。</p>
+
+    <h2>一、保存在你手机上的数据</h2>
+    <p>以下数据只保存在本机，不上传：</p>
+    <ul>
+      <li>你录入的段落、句子、翻译、复习与练习进度</li>
+      <li>每天的练习时长统计</li>
+      <li>朗读音频缓存、查词结果缓存（只保存你打开看过的查词结果）</li>
+      <li>App 设置（音色、震动等）</li>
+      <li>一个由本 App 随机生成的<strong>设备码</strong>（保存在系统钥匙串中，删除 App 后重装仍会保留）</li>
+    </ul>
+    <p>拍照或从相册选图识别文字时，<strong>照片只在手机上用系统的文字识别处理，不会上传</strong>；识别出的文字会按下面第二节的方式处理。</p>
+    <p>你可以在 App 内删除段落（先进回收站，30 天后自动彻底删除，也可以手动彻底删除），在「我的」页清除朗读缓存；删除 App 会清除上述本机数据（设备码除外，它保存在系统钥匙串中）。</p>
+
+    <h2>二、会发送给服务方的数据（需要你同意）</h2>
+    <p>本 App 的两类功能要用到第三方的人工智能服务。<strong>第一次用到时，本 App 会先说明并征得你的同意；不同意也可以继续使用不依赖这些服务的功能。</strong>你可以随时在「我的」页的「第三方服务」里关闭或重新打开。</p>
+
+    <h3>1. 语音服务：录音识别与朗读（火山引擎）</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>什么数据</th><th>用来做什么</th><th>发给谁</th></tr></thead>
+      <tbody>
+        <tr><td>你练习时的录音</td><td>实时转成文字，标出你读到了哪里</td><td>火山引擎（字节跳动旗下的云服务）的语音识别服务</td></tr>
+        <tr><td>需要朗读的英文句子</td><td>生成示范朗读的声音</td><td>火山引擎的语音合成服务，经本 App 的服务器转发</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>录音只在识别过程中暂存在手机内存里，本 App 不会把录音存成文件，也不会发给本 App 服务器（本 App 服务器只负责签发识别用的临时凭据）。</li>
+      <li>不同意时：不能录音跟读；示范朗读改用手机系统自带的声音，句子不会发出去。</li>
+    </ul>
+
+    <h3>2. 大模型：整理、翻译、查词与问候（豆包大模型，火山引擎）</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>什么数据</th><th>用来做什么</th><th>发给谁</th></tr></thead>
+      <tbody>
+        <tr><td>你保存的段落文字（手动输入的，或从照片识别出的文字）</td><td>自动断句、翻译成中文、生成标题</td><td>火山引擎的豆包大模型，经本 App 的服务器转发</td></tr>
+        <tr><td>你长按查询的单词和它所在的句子；练习中读得不太准的单词</td><td>查询这个词在句子里的意思和常见搭配（读得不准的词会提前查好）</td><td>同上</td></tr>
+        <tr><td>段落的标题（可能是保存时自动生成的）和它的分类</td><td>从 App 自带的一组小图里挑一张作为段落的小图标（不另外生成图片）</td><td>同上（不包含段落正文）</td></tr>
+        <tr><td>最近的练习情况：当前小时、星期几、今天和最近 7 天练习的分钟数与天数</td><td>生成首页吉祥物的问候语</td><td>同上（不包含段落内容）</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>本 App 请求大模型时，要求服务方<strong>不保存生成的结果用于后续检索</strong>。火山引擎对数据的处理与留存以其自身的政策与服务条款为准，其隐私承诺与合规说明见 <a href="https://www.volcengine.com/trust/privacy" rel="noopener">volcengine.com/trust/privacy</a>。</li>
+      <li>不同意时：段落照样可以保存和练习（在手机上断句，没有中文翻译和自动标题），段落的小图标用统一的分类图案，首页显示固定的问候语，查词功能不可用。</li>
+    </ul>
+
+    <h3>3. 每次请求都会附带的信息</h3>
+    <p>以上请求经本 App 的服务器（下称「本 App 服务器」，所在地：<strong>日本（大阪）</strong>）转发时，会附带<strong>设备码</strong>、App 版本号和系统平台，用于区分设备、限制每台设备每天的使用次数，以及排查故障。</p>
+
+    <h3>4. 数据跨境</h3>
+    <p>火山引擎的上述服务部署在<strong>中国大陆</strong>。本 App 的上架地区为
+    <strong>澳大利亚、加拿大、中国香港、日本、新西兰、新加坡、中国台湾、美国</strong>八地，
+    <strong>不在中国大陆、欧盟 / 欧洲经济区和英国上架</strong>。因此对所有用户而言，
+    上述数据都会被传输到中国大陆处理。</p>
+    <p>这项传输的依据是<strong>你的明示同意</strong>：相关功能默认关着，第一次用到时本 App 会先说明要发送什么、发给谁，
+    你同意之后才会发送，并且可以随时在「我的」→「第三方服务」里撤回。不同意也可以继续使用不依赖这些服务的功能。</p>
+
+    <h2>三、本 App 服务器保存什么、保存多久</h2>
+    <ul>
+      <li><strong>不记录你的 IP 地址</strong>：业务接口的访问日志已关闭。例外：当本 App 服务器自身连接上游服务出错时，服务器的错误日志可能记录请求来源 IP。这些日志写进服务器的系统日志，按容量滚动覆盖，我们不另行导出或长期留存。</li>
+      <li><strong>应用日志</strong>：记录设备码的前 8 位、请求编号、错误码、文字字数等，用于排查故障，不记录段落、句子、单词或录音内容。同样写进系统日志、按容量滚动覆盖，不另行导出或长期留存。</li>
+      <li><strong>使用次数计数</strong>：按完整设备码记录当天各功能的调用次数，第二天（北京时间）起清零覆盖。</li>
+      <li>本 App 服务器不保存你的段落、句子、查词内容、录音或朗读音频。</li>
+    </ul>
+
+    <h2>四、我们不做的事</h2>
+    <ul>
+      <li>不追踪你在其他 App 或网站上的活动，不使用广告标识符</li>
+      <li>不出售或出租你的数据，不用于广告</li>
+      <li>不接入第三方统计、广告或崩溃上报 SDK</li>
+      <li>不要求注册、登录或提供姓名、手机号、邮箱</li>
+    </ul>
+
+    <h2>五、你的权利</h2>
+    <ul>
+      <li><strong>撤回同意</strong>：在「我的」→「第三方服务」里关闭对应开关，之后不会再发送该类数据。撤回不影响撤回前已经完成的处理。</li>
+      <li><strong>删除数据</strong>：本机数据可在 App 内删除或随 App 删除；如需删除本 App 服务器上与你的设备码相关的记录，请发邮件至 <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a>，并提供「我的」页显示的设备码。</li>
+      <li><strong>查询与更正</strong>：你可以发邮件至 <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a>，我们会在 7 天内回复。</li>
+    </ul>
+
+    <h2>六、未成年人</h2>
+    <p>本 App 不面向 <strong>13 周岁</strong>以下的儿童，也不会有意收集他们的个人信息。</p>
+    <p>如果你未满所在地区的法定同意年龄，请在父母或监护人知情并同意后，再使用需要联网的功能
+    （录音识别、示范朗读、整理翻译、查词）。这些功能默认关着，第一次用到时会先问你。</p>
+    <p>如果你认为有儿童在未经监护人同意的情况下向我们提供了信息，请发邮件至
+    <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a>，我们会尽快删除。</p>
+
+    <h2>七、政策更新</h2>
+    <p>本政策内容有实质变化（例如新增接收数据的第三方、新增数据类型）时，我们会更新本页顶部的「最后更新」日期，并在 App 内再次征求你的同意。</p>
+
+    <h2>八、联系我们</h2>
+    <p>独立开发者 · <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a></p>
+  </div>
+
+  <!-- ─────────── English ─────────── -->
+  <div class="en">
+    <h1>Privacy Policy — 口语练习</h1>
+
+    <dl class="meta">
+      <dt>Last updated</dt><dd>19 September 2026</dd>
+      <dt>Developer</dt><dd>Independent developer</dd>
+      <dt>Contact</dt><dd><a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a></dd>
+    </dl>
+
+
+    <div class="lede">
+      <p><strong>In short</strong>: the App requires no account, does not track you, shows no ads, and includes no analytics or advertising SDKs. Your paragraphs and practice history stay on your phone. Only after you consent are recordings, paragraph text, and word lookups sent to the service providers listed below, and only to perform the feature you are using.</p>
+    </div>
+
+    <p>口语练习 ("the App") is a tool for practicing and memorizing spoken English. This policy explains what data the App handles, why, who receives it, how long it is kept, and how you can withdraw consent or request deletion.</p>
+
+    <h2>1. Data kept on your device</h2>
+    <p>The following stays on your device and is not uploaded:</p>
+    <ul>
+      <li>Paragraphs, sentences, translations, and your practice and review progress</li>
+      <li>Daily practice-time statistics</li>
+      <li>Cached narration audio and cached word-lookup results (only lookups you have opened)</li>
+      <li>App settings (voice, haptics, etc.)</li>
+      <li>A random <strong>device code</strong> generated by the App (stored in the system Keychain; it survives deleting and reinstalling the App)</li>
+    </ul>
+    <p>When you take a photo or pick one from your library to recognize text, <strong>the photo is processed on your device with the system's text recognition and is never uploaded</strong>. The recognized text is handled as described in Section 2.</p>
+    <p>You can delete paragraphs in the App (they go to Recently Deleted and are permanently removed after 30 days, or immediately if you choose) and clear cached narration audio on the Me page. Deleting the App removes this on-device data, except the device code kept in the Keychain.</p>
+
+    <h2>2. Data sent to service providers (requires your consent)</h2>
+    <p>Two groups of features rely on third-party AI services. <strong>The first time you use one, the App explains what will be sent and asks for your permission. If you decline, you can keep using everything that does not depend on that service.</strong> You can turn either group off or back on at any time under Me → Third-party services.</p>
+
+    <h3>2.1 Voice services: speech recognition and narration (Volcano Engine)</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Data</th><th>Purpose</th><th>Recipient</th></tr></thead>
+      <tbody>
+        <tr><td>Your voice while you practice</td><td>Transcribed in real time to highlight how far you have read</td><td>Volcano Engine (a ByteDance cloud service) speech recognition</td></tr>
+        <tr><td>English sentences to be read aloud</td><td>Generating the model narration</td><td>Volcano Engine speech synthesis, relayed through the App's server</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>Audio is held only briefly in your device's memory during recognition. The App never saves recordings as files and never sends them to the App's server (which only issues short-lived credentials for recognition).</li>
+      <li>If you decline: you cannot record, and narration uses your device's built-in voice, so no sentences are sent.</li>
+    </ul>
+
+    <h3>2.2 Large language model: tidying, translation, word lookup and greetings (Doubao, Volcano Engine)</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Data</th><th>Purpose</th><th>Recipient</th></tr></thead>
+      <tbody>
+        <tr><td>Text of paragraphs you save (typed, or recognized from a photo)</td><td>Splitting into sentences, translating into Chinese, suggesting a title</td><td>Volcano Engine's Doubao model, relayed through the App's server</td></tr>
+        <tr><td>Words you long-press, with the sentence they appear in; words you did not read accurately during practice</td><td>Looking up the word's meaning in context and common collocations (inaccurately read words are looked up in advance)</td><td>Same as above</td></tr>
+        <tr><td>A paragraph's title (which may have been generated automatically when you saved it) and its category</td><td>Choosing one of the small pictures bundled with the App as that paragraph's icon (no new image is generated)</td><td>Same as above (no paragraph body)</td></tr>
+        <tr><td>Recent practice activity: current hour, weekday, minutes and days practiced today and in the last 7 days</td><td>Generating the mascot's greeting on the home screen</td><td>Same as above (no paragraph content)</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>When calling the model, the App asks the provider <strong>not to store the generated responses for later retrieval</strong>. Volcano Engine's own handling and retention of data is governed by its own policies and terms; its privacy commitments and compliance information are at <a href="https://www.volcengine.com/trust/privacy" rel="noopener">volcengine.com/trust/privacy</a>.</li>
+      <li>If you decline: you can still save and practice paragraphs (sentences are split on your device, without Chinese translations or automatic titles), paragraph icons fall back to a shared category symbol, the home screen shows a fixed greeting, and word lookup is unavailable.</li>
+    </ul>
+
+    <h3>2.3 Sent with every request</h3>
+    <p>Requests relayed through the App's server (located in <strong>Osaka, Japan</strong>) include the <strong>device code</strong>, the App version, and the platform, used to tell devices apart, enforce per-device daily limits, and troubleshoot problems.</p>
+
+    <h3>2.4 International transfer</h3>
+    <p>The Volcano Engine services above run in <strong>mainland China</strong>. The App is offered in
+    <strong>Australia, Canada, Hong Kong, Japan, New Zealand, Singapore, Taiwan and the United States</strong>, and
+    <strong>is not offered in mainland China, the EU / EEA or the United Kingdom</strong>. So for every user, this data
+    is transferred to and processed in mainland China.</p>
+    <p>The basis for that transfer is <strong>your explicit consent</strong>: these features are off by default, the App
+    explains what will be sent and to whom before the first use, nothing is sent until you agree, and you can withdraw
+    at any time under Me → Third-party services. Declining leaves everything that does not depend on those services usable.</p>
+
+    <h2>3. What the App's server keeps, and for how long</h2>
+    <ul>
+      <li><strong>Your IP address is not logged</strong>: access logs for the App's API are turned off. Exception: when the server itself fails to reach an upstream service, its error log may record the requesting IP address. These logs go to the server's system journal and are rotated by size; we do not export or retain them separately.</li>
+      <li><strong>Application logs</strong>: the first 8 characters of the device code, request IDs, error codes, and text lengths, used for troubleshooting; they never contain paragraphs, sentences, words, or audio. They go to the same system journal, rotated by size, and are not exported or retained separately.</li>
+      <li><strong>Usage counters</strong>: per full device code, the number of calls to each feature for the current day; reset and overwritten the next day (China Standard Time).</li>
+      <li>The App's server does not store your paragraphs, sentences, lookups, recordings, or narration audio.</li>
+    </ul>
+
+    <h2>4. What we don't do</h2>
+    <ul>
+      <li>No tracking across other apps or websites; no advertising identifier</li>
+      <li>No selling or renting your data; no advertising use</li>
+      <li>No third-party analytics, advertising, or crash-reporting SDKs</li>
+      <li>No sign-up, login, name, phone number, or email required</li>
+    </ul>
+
+    <h2>5. Your choices and rights</h2>
+    <ul>
+      <li><strong>Withdraw consent</strong>: turn off the relevant switch under Me → Third-party services; that data will no longer be sent. Withdrawal does not affect processing completed before it.</li>
+      <li><strong>Deletion</strong>: on-device data can be deleted in the App or by deleting the App. To delete records on the App's server associated with your device code, email <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a> and include the device code shown on the Me page.</li>
+      <li><strong>Access and correction</strong>: email <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a>; we will reply within 7 days.</li>
+    </ul>
+
+    <h2>6. Children</h2>
+    <p>The App is not directed to children under <strong>13</strong> and does not knowingly collect their personal information.</p>
+    <p>If you are below the age of consent where you live, please use the network features (speech recognition,
+    narration, tidying and translation, word lookup) only with a parent or guardian's knowledge and consent.
+    Those features are off by default and the App asks before the first use.</p>
+    <p>If you believe a child has provided us with information without their guardian's consent, email
+    <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a> and we will delete it promptly.</p>
+
+    <h2>7. Changes to this policy</h2>
+    <p>If this policy changes materially (for example, a new recipient or a new type of data), we will update the "Last updated" date at the top of this page and ask for your consent again in the App.</p>
+
+    <h2>8. Contact</h2>
+    <p>Independent developer · <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a></p>
+  </div>
+
+  <div class="foot">
+    <span class="zh">本页是「口语练习」App 的隐私政策。App 内「我的 → 隐私政策」指向这里。</span>
+    <span class="en">This page is the privacy policy for the 口语练习 app. It is linked from Me → Privacy policy inside the App.</span>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var doc = document.getElementById('doc');
+    var zh = document.getElementById('btn-zh');
+    var en = document.getElementById('btn-en');
+    function set(lang) {
+      doc.setAttribute('data-lang', lang);
+      zh.setAttribute('aria-pressed', String(lang === 'zh'));
+      en.setAttribute('aria-pressed', String(lang === 'en'));
+      try { localStorage.setItem('vep-policy-lang', lang); } catch (e) { /* 隐私窗口 / 站点数据被禁：按默认中文渲染即可 */ }
+    }
+    zh.addEventListener('click', function () { set('zh'); });
+    en.addEventListener('click', function () { set('en'); });
+    var saved = null;
+    try { saved = localStorage.getItem('vep-policy-lang'); } catch (e) { saved = null; }
+    if (saved === 'en' || saved === 'zh') { set(saved); }
+    else if ((navigator.language || '').toLowerCase().indexOf('zh') !== 0) { set('en'); }
+  })();
+</script>
