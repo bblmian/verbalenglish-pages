@@ -1,36 +1,52 @@
-<title>口语练习 隐私政策</title>
+<!DOCTYPE html>
+<!-- rev: 2026-09-19b · 结构与渲染修复 + 支持页上线 + 联系入口（ADR-041）。改这一行前先读 Product/privacy-policy/README.md -->
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+  // 🔴 必须在 <head> 里跑：放 body 末尾的话，Safari 会先把整页中文画完再执行它 ——
+  // 慢链路 / 境外访问时，英文读者会先看到一整屏中文（2026-09-19 模拟器实测拍到）
+  (function () {
+    var lang = null;
+    try { lang = localStorage.getItem("vep-policy-lang"); } catch (e) { lang = null; }
+    if (lang !== "en" && lang !== "zh") {
+      lang = (navigator.language || "").toLowerCase().indexOf("zh") === 0 ? "zh" : "en";
+    }
+    var el = document.documentElement;
+    el.setAttribute("data-lang", lang);
+    el.lang = (lang === "en") ? "en" : "zh-CN";
+    document.title = (lang === "en") ? "口语练习 (Spoken English Practice) · Privacy Policy" : "口语练习 · 隐私政策";
+  })();
+</script>
+<title>口语练习 · 隐私政策</title>
 <style>
   :root {
+    color-scheme: light dark;
     --ground: #FAFAFC;
     --surface: #FFFFFF;
     --ink: #171A23;
     --muted: #5A6072;
     --accent: #3B45A6;
+    --on-accent: #FFFFFF;
     --hairline: #E6E8F0;
     --table-head: #F3F4F9;
   }
-  :root:not([data-theme="light"]) {
-    @media (prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: dark) {
+    :root {
       --ground: #12141B;
       --surface: #191C25;
       --ink: #E8EAF2;
       --muted: #9AA0B4;
       --accent: #8D96F0;
+      --on-accent: #12141B;
       --hairline: #272B38;
       --table-head: #202533;
     }
   }
-  :root[data-theme="dark"] {
-    --ground: #12141B;
-    --surface: #191C25;
-    --ink: #E8EAF2;
-    --muted: #9AA0B4;
-    --accent: #8D96F0;
-    --hairline: #272B38;
-    --table-head: #202533;
-  }
 
   body {
+    margin: 0;
     background: var(--ground);
     color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
@@ -44,7 +60,9 @@
     position: sticky;
     top: env(safe-area-inset-top, 0px);
     z-index: 10;
+    background: var(--ground);                         /* 🔴 兜底：color-mix 要 Safari 16.2+，没有它顶栏会完全透明 */
     background: color-mix(in srgb, var(--ground) 88%, transparent);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);  /* Safari 18 之前只认前缀版 */
     backdrop-filter: saturate(160%) blur(12px);
     border-bottom: 1px solid var(--hairline);
   }
@@ -64,9 +82,9 @@
   .langs button {
     appearance: none; border: 0; background: transparent; cursor: pointer;
     font: inherit; font-size: 13px; line-height: 1.6;
-    color: var(--muted); padding: 3px 12px; border-radius: 999px;
+    color: var(--muted); padding: 12px 14px; border-radius: 999px;   /* 44pt 点击目标（HIG） */
   }
-  .langs button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  .langs button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
   .langs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   main { max-width: 46rem; margin: 0 auto; padding-inline: 20px; padding-block: 28px 72px; }
@@ -89,6 +107,7 @@
     font-size: 14px; font-variant-numeric: tabular-nums;
   }
   .meta dt { color: var(--muted); }
+  .meta dd a { overflow-wrap: anywhere; }   /* 邮箱不可断行 ⇒ 320pt 下整页横向滚动 */
   .meta dd { margin: 0; }
 
   .lede {
@@ -106,6 +125,28 @@
   thead th { background: var(--table-head); font-weight: 600; white-space: nowrap; }
   tbody tr:last-child td { border-bottom: 0; }
 
+
+  /* 🔴 窄屏把三列表格改成堆叠卡片。
+     不这么做的话：表格 min-width 34rem = 544px，而 390pt 手机上 .scroll 只有 348px
+     ⇒ 第三列「发给谁」被切掉整整 196px，而 iOS 不常驻滚动条、这里也没有任何可横滑的提示 ——
+     隐私政策里法律上最要紧的一列，就这么看不见了。（2026-09-19 模拟器实测） */
+  @media (max-width: 40rem) {
+    .scroll { border: 0; overflow-x: visible; border-radius: 0; }
+    table { display: block; min-width: 0; background: transparent; font-size: 15px; }
+    thead { display: none; }
+    tbody, tr, td { display: block; }
+    tr {
+      background: var(--surface); border: 1px solid var(--hairline);
+      border-radius: 10px; margin-bottom: 10px; padding: 4px 0;
+    }
+    tr:last-child { margin-bottom: 0; }
+    td { border-bottom: 0; padding: 8px 14px; }
+    td::before {
+      content: attr(data-label); display: block;
+      font-size: 12.5px; font-weight: 600; color: var(--muted); line-height: 1.5;
+    }
+  }
+
   code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; }
 
   .foot { margin-top: 52px; padding-top: 20px; border-top: 1px solid var(--hairline); color: var(--muted); font-size: 14px; }
@@ -114,6 +155,8 @@
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
+</head>
+<body>
 
 <div class="bar">
   <div class="bar-inner">
@@ -125,7 +168,7 @@
   </div>
 </div>
 
-<main id="doc" data-lang="zh">
+<main id="doc">
 
   <!-- ─────────── 中文 ─────────── -->
   <div class="zh">
@@ -163,8 +206,8 @@
     <div class="scroll"><table>
       <thead><tr><th>什么数据</th><th>用来做什么</th><th>发给谁</th></tr></thead>
       <tbody>
-        <tr><td>你练习时的录音</td><td>实时转成文字，标出你读到了哪里</td><td>火山引擎（字节跳动旗下的云服务）的语音识别服务</td></tr>
-        <tr><td>需要朗读的英文句子</td><td>生成示范朗读的声音</td><td>火山引擎的语音合成服务，经本 App 的服务器转发</td></tr>
+        <tr><td data-label="什么数据">你练习时的录音</td><td data-label="用来做什么">实时转成文字，标出你读到了哪里</td><td data-label="发给谁">火山引擎（字节跳动旗下的云服务）的语音识别服务</td></tr>
+        <tr><td data-label="什么数据">需要朗读的英文句子</td><td data-label="用来做什么">生成示范朗读的声音</td><td data-label="发给谁">火山引擎的语音合成服务，经本 App 的服务器转发</td></tr>
       </tbody>
     </table></div>
     <ul>
@@ -173,13 +216,14 @@
     </ul>
 
     <h3>2. 大模型：整理、翻译、查词与问候（豆包大模型，火山引擎）</h3>
+    <p>App 里这一项的开关叫<strong>「整理、翻译与查词」</strong>（「我的」→「第三方服务」）—— 首页吉祥物的问候语也走它。</p>
     <div class="scroll"><table>
       <thead><tr><th>什么数据</th><th>用来做什么</th><th>发给谁</th></tr></thead>
       <tbody>
-        <tr><td>你保存的段落文字（手动输入的，或从照片识别出的文字）</td><td>自动断句、翻译成中文、生成标题</td><td>火山引擎的豆包大模型，经本 App 的服务器转发</td></tr>
-        <tr><td>你长按查询的单词和它所在的句子；练习中读得不太准的单词</td><td>查询这个词在句子里的意思和常见搭配（读得不准的词会提前查好）</td><td>同上</td></tr>
-        <tr><td>段落的标题（可能是保存时自动生成的）和它的分类</td><td>从 App 自带的一组小图里挑一张作为段落的小图标（不另外生成图片）</td><td>同上（不包含段落正文）</td></tr>
-        <tr><td>最近的练习情况：当前小时、星期几、今天和最近 7 天练习的分钟数与天数</td><td>生成首页吉祥物的问候语</td><td>同上（不包含段落内容）</td></tr>
+        <tr><td data-label="什么数据">你保存的段落文字（手动输入的，或从照片识别出的文字）</td><td data-label="用来做什么">自动断句、翻译成中文、生成标题</td><td data-label="发给谁">火山引擎的豆包大模型，经本 App 的服务器转发</td></tr>
+        <tr><td data-label="什么数据">你长按查询的单词和它所在的句子；练习中读得不太准的单词</td><td data-label="用来做什么">查询这个词在句子里的意思和常见搭配（读得不准的词会提前查好）</td><td data-label="发给谁">同上</td></tr>
+        <tr><td data-label="什么数据">段落的标题（可能是保存时自动生成的）和它的分类</td><td data-label="用来做什么">从 App 自带的一组小图里挑一张作为段落的小图标（不另外生成图片）</td><td data-label="发给谁">同上（不包含段落正文）</td></tr>
+        <tr><td data-label="什么数据">最近的练习情况：当前小时、星期几、今天和最近 7 天练习的分钟数与天数</td><td data-label="用来做什么">生成首页吉祥物的问候语</td><td data-label="发给谁">同上（不包含段落内容）</td></tr>
       </tbody>
     </table></div>
     <ul>
@@ -217,8 +261,9 @@
     <h2>五、你的权利</h2>
     <ul>
       <li><strong>撤回同意</strong>：在「我的」→「第三方服务」里关闭对应开关，之后不会再发送该类数据。撤回不影响撤回前已经完成的处理。</li>
-      <li><strong>删除数据</strong>：本机数据可在 App 内删除或随 App 删除；如需删除本 App 服务器上与你的设备码相关的记录，请发邮件至 <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a>，并提供「我的」页显示的设备码。</li>
+      <li><strong>删除数据</strong>：本机数据可在 App 内删除或随 App 删除；如需删除本 App 服务器上与你的设备码相关的记录，请发邮件至 <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a>，并附上设备码 —— 在「我的」页最下方点<strong>「复制」</strong>拿到完整的码（页面上显示的只有前 8 位），我们会在 7 天内回复。</li>
       <li><strong>查询与更正</strong>：你可以发邮件至 <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a>，我们会在 7 天内回复。</li>
+      <li><strong>你写信给我之后</strong>：你的邮箱地址和信件内容保存在我的邮箱里，只用于回复你这件事。App 里「我的」→「给作者写信」只是替你起草一封信（正文里预填的 App 版本、机型、系统版本<strong>写在你看得见的正文里，发出前可以删</strong>），在你按下发送之前，<strong>本 App 不会把任何内容发出去</strong>（草稿之后归你的邮件 App 保管）。</li>
     </ul>
 
     <h2>六、未成年人</h2>
@@ -271,8 +316,8 @@
     <div class="scroll"><table>
       <thead><tr><th>Data</th><th>Purpose</th><th>Recipient</th></tr></thead>
       <tbody>
-        <tr><td>Your voice while you practice</td><td>Transcribed in real time to highlight how far you have read</td><td>Volcano Engine (a ByteDance cloud service) speech recognition</td></tr>
-        <tr><td>English sentences to be read aloud</td><td>Generating the model narration</td><td>Volcano Engine speech synthesis, relayed through the App's server</td></tr>
+        <tr><td data-label="Data">Your voice while you practice</td><td data-label="Purpose">Transcribed in real time to highlight how far you have read</td><td data-label="Recipient">Volcano Engine (a ByteDance cloud service) speech recognition</td></tr>
+        <tr><td data-label="Data">English sentences to be read aloud</td><td data-label="Purpose">Generating the model narration</td><td data-label="Recipient">Volcano Engine speech synthesis, relayed through the App's server</td></tr>
       </tbody>
     </table></div>
     <ul>
@@ -281,13 +326,14 @@
     </ul>
 
     <h3>2.2 Large language model: tidying, translation, word lookup and greetings (Doubao, Volcano Engine)</h3>
+    <p>In the App this switch is called <strong>“整理、翻译与查词”</strong> (tidy-up, translation &amp; word lookup), under <em>Me (我的) → Third-party services (第三方服务)</em> — the mascot's greeting on the home screen also uses it.</p>
     <div class="scroll"><table>
       <thead><tr><th>Data</th><th>Purpose</th><th>Recipient</th></tr></thead>
       <tbody>
-        <tr><td>Text of paragraphs you save (typed, or recognized from a photo)</td><td>Splitting into sentences, translating into Chinese, suggesting a title</td><td>Volcano Engine's Doubao model, relayed through the App's server</td></tr>
-        <tr><td>Words you long-press, with the sentence they appear in; words you did not read accurately during practice</td><td>Looking up the word's meaning in context and common collocations (inaccurately read words are looked up in advance)</td><td>Same as above</td></tr>
-        <tr><td>A paragraph's title (which may have been generated automatically when you saved it) and its category</td><td>Choosing one of the small pictures bundled with the App as that paragraph's icon (no new image is generated)</td><td>Same as above (no paragraph body)</td></tr>
-        <tr><td>Recent practice activity: current hour, weekday, minutes and days practiced today and in the last 7 days</td><td>Generating the mascot's greeting on the home screen</td><td>Same as above (no paragraph content)</td></tr>
+        <tr><td data-label="Data">Text of paragraphs you save (typed, or recognized from a photo)</td><td data-label="Purpose">Splitting into sentences, translating into Chinese, suggesting a title</td><td data-label="Recipient">Volcano Engine's Doubao model, relayed through the App's server</td></tr>
+        <tr><td data-label="Data">Words you long-press, with the sentence they appear in; words you did not read accurately during practice</td><td data-label="Purpose">Looking up the word's meaning in context and common collocations (inaccurately read words are looked up in advance)</td><td data-label="Recipient">Same as above</td></tr>
+        <tr><td data-label="Data">A paragraph's title (which may have been generated automatically when you saved it) and its category</td><td data-label="Purpose">Choosing one of the small pictures bundled with the App as that paragraph's icon (no new image is generated)</td><td data-label="Recipient">Same as above (no paragraph body)</td></tr>
+        <tr><td data-label="Data">Recent practice activity: current hour, weekday, minutes and days practiced today and in the last 7 days</td><td data-label="Purpose">Generating the mascot's greeting on the home screen</td><td data-label="Recipient">Same as above (no paragraph content)</td></tr>
       </tbody>
     </table></div>
     <ul>
@@ -326,8 +372,9 @@
     <h2>5. Your choices and rights</h2>
     <ul>
       <li><strong>Withdraw consent</strong>: turn off the relevant switch under Me → Third-party services; that data will no longer be sent. Withdrawal does not affect processing completed before it.</li>
-      <li><strong>Deletion</strong>: on-device data can be deleted in the App or by deleting the App. To delete records on the App's server associated with your device code, email <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a> and include the device code shown on the Me page.</li>
+      <li><strong>Deletion</strong>: on-device data can be deleted in the App or by deleting the App. To delete records on the App's server associated with your device code, email <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a> and include your device code — tap <strong>“复制” (Copy)</strong> at the bottom of the <em>Me (我的)</em> page to get the full code (only the first 8 characters are shown on screen). We will reply within 7 days.</li>
       <li><strong>Access and correction</strong>: email <a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a>; we will reply within 7 days.</li>
+      <li><strong>When you write to me</strong>: your email address and the contents of your message stay in my mailbox and are used only to reply to you. <em>Me (我的) → Write to the author (给作者写信)</em> in the App only drafts the message for you — the app version, device model and OS version it pre-fills are <strong>written in the visible body and can be deleted before you send</strong>. The App itself sends nothing until you tap send (from then on the draft is held by your mail app).</li>
     </ul>
 
     <h2>6. Children</h2>
@@ -346,27 +393,28 @@
   </div>
 
   <div class="foot">
-    <span class="zh">本页是「口语练习」App 的隐私政策。App 内「我的 → 隐私政策」指向这里。</span>
-    <span class="en">This page is the privacy policy for the 口语练习 app. It is linked from Me → Privacy policy inside the App.</span>
+    <span class="zh"><a href="support.html">支持 / Support</a> · 本页是「口语练习」App 的隐私政策。App 内「我的 → 隐私政策」指向这里。</span>
+    <span class="en"><a href="support.html">支持 / Support</a> · This page is the privacy policy for the 口语练习 app. It is linked from Me → Privacy policy inside the App.</span>
   </div>
 </main>
 
 <script>
   (function () {
-    var doc = document.getElementById('doc');
+    var doc = document.documentElement;
     var zh = document.getElementById('btn-zh');
     var en = document.getElementById('btn-en');
     function set(lang) {
       doc.setAttribute('data-lang', lang);
+      doc.lang = (lang === 'en') ? 'en' : 'zh-CN';
+      document.title = (lang === 'en') ? "口语练习 (Spoken English Practice) · Privacy Policy" : "口语练习 · 隐私政策";
       zh.setAttribute('aria-pressed', String(lang === 'zh'));
       en.setAttribute('aria-pressed', String(lang === 'en'));
       try { localStorage.setItem('vep-policy-lang', lang); } catch (e) { /* 隐私窗口 / 站点数据被禁：按默认中文渲染即可 */ }
     }
     zh.addEventListener('click', function () { set('zh'); });
     en.addEventListener('click', function () { set('en'); });
-    var saved = null;
-    try { saved = localStorage.getItem('vep-policy-lang'); } catch (e) { saved = null; }
-    if (saved === 'en' || saved === 'zh') { set(saved); }
-    else if ((navigator.language || '').toLowerCase().indexOf('zh') !== 0) { set('en'); }
+    set(doc.getAttribute('data-lang') === 'en' ? 'en' : 'zh');   // head 里已经定好，这里只同步按钮
   })();
 </script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<!-- rev: 2026-09-19b · 首版上线 + App 内联系入口（ADR-041）。改这一行前先读 Product/privacy-policy/README.md -->
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+  // 🔴 必须在 <head> 里跑：放 body 末尾的话，Safari 会先把整页中文画完再执行它 ——
+  // 慢链路 / 境外访问时，英文读者会先看到一整屏中文（2026-09-19 模拟器实测拍到）
+  (function () {
+    var lang = null;
+    try { lang = localStorage.getItem("vep-policy-lang"); } catch (e) { lang = null; }
+    if (lang !== "en" && lang !== "zh") {
+      lang = (navigator.language || "").toLowerCase().indexOf("zh") === 0 ? "zh" : "en";
+    }
+    var el = document.documentElement;
+    el.setAttribute("data-lang", lang);
+    el.lang = (lang === "en") ? "en" : "zh-CN";
+    document.title = (lang === "en") ? "口语练习 (Spoken English Practice) · Support" : "口语练习 · 支持";
+  })();
+</script>
+<title>口语练习 · 支持</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --ground: #FAFAFC;
+    --surface: #FFFFFF;
+    --ink: #171A23;
+    --muted: #5A6072;
+    --accent: #3B45A6;
+    --on-accent: #FFFFFF;
+    --hairline: #E6E8F0;
+    --table-head: #F3F4F9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #12141B;
+      --surface: #191C25;
+      --ink: #E8EAF2;
+      --muted: #9AA0B4;
+      --accent: #8D96F0;
+      --on-accent: #12141B;
+      --hairline: #272B38;
+      --table-head: #202533;
+    }
+  }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+                 "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .bar {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: var(--ground);                         /* 🔴 兜底：color-mix 要 Safari 16.2+，没有它顶栏会完全透明 */
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);  /* Safari 18 之前只认前缀版 */
+    backdrop-filter: saturate(160%) blur(12px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .bar-inner {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .wordmark { font-size: 14px; font-weight: 600; letter-spacing: .01em; }
+  .wordmark span { color: var(--muted); font-weight: 400; }
+
+  .langs { display: flex; gap: 2px; border: 1px solid var(--hairline); border-radius: 999px; padding: 2px; background: var(--surface); }
+  .langs button {
+    appearance: none; border: 0; background: transparent; cursor: pointer;
+    font: inherit; font-size: 13px; line-height: 1.6;
+    color: var(--muted); padding: 12px 14px; border-radius: 999px;   /* 44pt 点击目标（HIG） */
+  }
+  .langs button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+  .langs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  main { max-width: 46rem; margin: 0 auto; padding-inline: 20px; padding-block: 28px 72px; }
+
+  h1 { font-size: 27px; line-height: 1.3; margin: 0 0 6px; text-wrap: balance; letter-spacing: -.01em; }
+  h2 {
+    font-size: 19px; line-height: 1.4; margin: 44px 0 12px; text-wrap: balance;
+    padding-top: 22px; border-top: 1px solid var(--hairline);
+  }
+  h3 { font-size: 16px; margin: 26px 0 8px; color: var(--accent); }
+  p, li { margin: 10px 0; }
+  ul { padding-left: 1.25em; }
+  strong { font-weight: 640; }
+  a { color: var(--accent); }
+
+  .meta {
+    display: grid; grid-template-columns: auto 1fr; gap: 4px 14px;
+    margin: 18px 0 0; padding: 14px 16px;
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px;
+    font-size: 14px; font-variant-numeric: tabular-nums;
+  }
+  .meta dt { color: var(--muted); }
+  .meta dd a { overflow-wrap: anywhere; }   /* 邮箱不可断行 ⇒ 320pt 下整页横向滚动 */
+  .meta dd { margin: 0; }
+
+  .lede {
+    margin: 22px 0 0; padding: 16px 18px;
+    background: var(--surface); border: 1px solid var(--hairline);
+    border-left: 3px solid var(--accent); border-radius: 4px 10px 10px 4px;
+  }
+  .lede p { margin: 0; }
+
+  /* 问答：一问一答，答案缩进，比 <dl> 在窄屏上稳 */
+  .qa { margin: 16px 0 0; padding: 0; }
+  .qa > li { list-style: none; margin: 0 0 18px; padding: 14px 16px;
+             background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px; }
+  /* 问句用真标题：读屏可以按标题在问答之间跳（整页 30+ 条，只靠加粗的话只能从头听） */
+  .qa > li > h3 { margin: 0 0 6px; font-size: 16px; font-weight: 640; color: var(--ink); }
+  .qa > li > p:last-child { margin-bottom: 0; }
+
+  .mail {
+    display: inline-block; margin: 14px 0 0; padding: 13px 22px;
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px;
+    font-size: 16px;
+  }
+  .mail a { font-weight: 600; text-decoration: none; }
+  .mail a:hover { text-decoration: underline; }
+
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; }
+
+  .foot { margin-top: 52px; padding-top: 20px; border-top: 1px solid var(--hairline); color: var(--muted); font-size: 14px; }
+
+  [data-lang="en"] .zh, [data-lang="zh"] .en { display: none; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="wordmark">口语练习 <span>Spoken English Practice</span></div>
+    <div class="langs" role="group" aria-label="语言 / Language">
+      <button id="btn-zh" type="button" aria-pressed="true">中文</button>
+      <button id="btn-en" type="button" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</div>
+
+<main id="doc">
+
+  <!-- ─────────── 中文 ─────────── -->
+  <div class="zh">
+    <h1>「口语练习」支持</h1>
+
+    <dl class="meta">
+      <dt>开发者</dt><dd>独立开发者</dd>
+      <dt>联系方式</dt><dd><a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a></dd>
+      <dt>答复时限</dt><dd>7 天内</dd>
+    </dl>
+
+    <div class="lede">
+      <p><strong>先看下面的常见问题</strong>；没解决的，发邮件给我，7 天内回复。本 App 免费，<strong>不需要注册登录</strong>，没有内购和订阅。</p>
+    </div>
+
+    <h2>遇到问题先试这三步</h2>
+    <ul>
+      <li>把 App 划掉重开一次</li>
+      <li>「我的 → 权限设置」，确认<strong>麦克风</strong>（跟读要用）和<strong>相机</strong>（拍照录入要用）是开着的</li>
+      <li>「我的 → 第三方服务」，看看<strong>「语音识别与朗读」</strong>和<strong>「整理、翻译与查词」</strong>这两项的状态。它们<strong>不是必须打开的</strong>——不同意也能存段落、能练、能听示范；但<strong>跟读识别</strong>要第一项，<strong>中文翻译、自动标题和查词</strong>要第二项</li>
+    </ul>
+
+    <h2>录音与识别</h2>
+    <ul class="qa" role="list">
+      <li>
+        <h3>按住麦克风没反应，屏幕上也不出字</h3>
+        <p>多半是麦克风权限没给，或者「语音识别与朗读」还没同意。前者去「我的 → 权限设置」，后者去「我的 → 第三方服务」。两个都好了还是不行的话，换个安静一点的地方再试 —— 嘈杂环境下识别会很吃力。</p>
+      </li>
+      <li>
+        <h3>提示「没听清，再试一次」</h3>
+        <p>这句在<strong>网络不稳</strong>或识别服务临时出错时也会出现，<strong>不一定是你读得不好</strong>。点提示上的「重试」再来一次；连着几次都这样就等一会儿，或换个网络。</p>
+      </li>
+      <li>
+        <h3>提示「音频还没准备好，再试一次」或「引擎没有响应，再试一次」</h3>
+        <p>这是<strong>还没开始录</strong>就失败了 —— 系统没把麦克风交给 App，通话中、刚挂断电话、或者别的 App 正在占用音频时最常见。这跟读得好不好没关系，等几秒再点一次麦克风就行。</p>
+      </li>
+      <li>
+        <h3>提示「录音被打断了」，还有个「再来一次」</h3>
+        <p>来电、闹钟或别的 App 抢走了音频。<strong>本 App 有意不自动接着录</strong>（不然你接完电话回来，它已经在偷偷录了），所以要你自己点一下「再来一次」。</p>
+      </li>
+      <li>
+        <h3>读着读着停了，提示「识别结束了，点麦克风继续」</h3>
+        <p>识别连接断开或到了单次时长上限。<strong>已经读到的遍数不会丢</strong>，点一下麦克风接着读就行。网络不稳时会比较容易碰到。</p>
+      </li>
+      <li>
+        <h3>提示「语音服务暂时不可用，稍后再试」</h3>
+        <p>可能是今天用得比较多（每台设备每天有调用上限），也可能是同时用的人多、服务正忙。过一会儿再试。每日额度按<strong>北京时间（UTC+8）</strong>的零点重置，<strong>不是你所在时区的零点</strong>。</p>
+      </li>
+      <li>
+        <h3>提示「离线中，联网后再试」</h3>
+        <p><strong>跟读识别要联网</strong>，这条提示说的就是它。离线时其余的照常：可以<strong>听示范</strong>（换成手机系统自带的声音，不是你选的音色）、可以复习、也可以新增段落（本机断句，只是没有中文翻译和自动标题）。</p>
+      </li>
+      <li>
+        <h3>某一句我明明读完了，进度却不往前走</h3>
+        <p>本 App 的判定是<strong>「读完即过」</strong>，故意放宽的：每句允许漏掉少量词，缩写、数字写法不同都算读到。但这个「允许漏」的额度很小（句子越短额度越少），所以<strong>短句最容易卡</strong>。</p>
+        <p>已知会白白吃掉一格额度的情况：<strong>句首是一个中文拼音名字</strong>（例如 “Daming asked…”，大写小写都一样）。这时候<strong>只要其余每个词都读清楚，仍然能过</strong>——但不能再漏第二个词了。所以对付卡住的句子，有用的做法是<strong>放慢、把每个词都读实</strong>，而不是整句重读一遍。</p>
+        <p>实在过不去，可以在段落详情页「⋯ → 重置进度」从头再背这一段（会清掉这一段的练习进度）。</p>
+      </li>
+      <li>
+        <h3>它会给我的发音打分吗？</h3>
+        <p><strong>不会。</strong>本 App 只判断你有没有把这句读完，不打分、不纠音、不做语调分析。设计上就是要你多读几遍，而不是读得多标准。</p>
+      </li>
+    </ul>
+
+    <h2>示范朗读</h2>
+    <ul class="qa" role="list">
+      <li>
+        <h3>练习页上示范按钮是灰的，按不动</h3>
+        <p><strong>正在录音时示范按钮会禁用</strong>（录音和放音互斥，免得喇叭的声音被麦克风录进去）。先松开录音，按钮就会恢复。</p>
+      </li>
+      <li>
+        <h3>点了示范没有声音</h3>
+        <p>依次检查手机侧面的<strong>静音开关</strong>、音量、有没有插着耳机或连着蓝牙设备。</p>
+      </li>
+      <li>
+        <h3>换了示范音色之后，每句都要多等一下，缓存还变大了</h3>
+        <p>这是正常的：朗读音频<strong>按音色分别缓存</strong>，换了音色等于全部要重新合成一遍，所以每句第一次会慢一点。<strong>旧音色的音频不会自动删掉</strong>，还占着空间 —— 介意的话去「我的 → 清除朗读缓存」清一次。</p>
+      </li>
+      <li>
+        <h3>我选的音色自己变回默认了</h3>
+        <p>服务端下架某个音色时，App 会自动回落到默认音色，免得示范整个失声。去「我的 → 示范音色」重新选一个就行。</p>
+      </li>
+      <li>
+        <h3>没同意「语音识别与朗读」，还能听示范吗？</h3>
+        <p>能。不同意时示范朗读改用<strong>手机系统自带的声音</strong>，句子不会发送出去；只是不能录音跟读。</p>
+      </li>
+      <li>
+        <h3>想腾点空间</h3>
+        <p>「我的 → 清除朗读缓存」。<strong>段落和练习进度都不会动</strong>，只是把存下来的朗读声音删掉，下次朗读要重新合成、会多等一下。</p>
+      </li>
+    </ul>
+
+    <h2>录入段落</h2>
+    <ul class="qa" role="list">
+      <li>
+        <h3>拍照识别出来的文字有错</h3>
+        <p>识别结果页可以直接改，改完再保存。拍的时候让纸面平整、光线均匀、文字尽量占满画面会准很多。<strong>照片只在你的手机上处理，不会上传</strong>；不过<strong>保存</strong>时，识别出来的<strong>文字</strong>会按你同意的范围发出去做断句和翻译（见下面「我的数据」）。</p>
+      </li>
+      <li>
+        <h3>段落没有中文翻译，或者标题是空的</h3>
+        <p>保存时没联网、或者没同意「整理、翻译与查词」就会这样（这时用的是本机断句）。补救：打开这一段的详情页，「⋯ → 补上中文」。<strong>标题不会自动补</strong> —— 标题本来就随你改，没法判断哪个算「缺」，直接在「⋯ → 编辑正文」里写一个就行。</p>
+      </li>
+      <li>
+        <h3>长按单词查不出意思</h3>
+        <p>查词要同意「整理、翻译与查词」，并且需要联网。另外每天有<strong>次数上限</strong>，按<strong>北京时间（UTC+8）</strong>的零点重置。<strong>如果你刚一口气查了很多个词</strong>，提示也可能是临时限流 —— 这种等一两分钟再试通常就好了，不用等到第二天。</p>
+      </li>
+      <li>
+        <h3>提示「没保存成功」/「进度没能保存」</h3>
+        <p>多半是<strong>手机存储空间不够</strong>。去 iPhone「设置 → 通用 → iPhone 储存空间」腾一点出来再试。这条值得当回事 —— 空间满的时候，一整轮练习的进度可能存不下去。</p>
+      </li>
+      <li>
+        <h3>段落删错了</h3>
+        <p>「我的 → 回收站」里找得回来。删掉的段落在回收站里<strong>保留 30 天</strong>，之后自动彻底删除；也可以在回收站里手动彻底删除。</p>
+      </li>
+    </ul>
+
+    <h2>我的数据</h2>
+    <ul class="qa" role="list">
+      <li>
+        <h3>我的段落和进度存在哪里？换手机会不会丢？</h3>
+        <p>都存在<strong>这台设备上</strong>，<strong>目前没有云端备份</strong>。换手机或删除 App 之后，这些内容<strong>不会</strong>自动回来，也无法恢复。</p>
+        <p>需要说清楚的是：<strong>段落本身不会被上传保存</strong>，但在你同意之后，录音和段落文字会为了完成对应功能<strong>发送</strong>给服务方处理 —— 本 App 的服务器在<strong>日本</strong>，语音识别、朗读和大模型服务在<strong>中国大陆</strong>。完整说明见<a href="index.html">隐私政策</a>。</p>
+      </li>
+      <li>
+        <h3>「第三方服务」的开关我明明同意过，怎么自己关了？</h3>
+        <p>告知内容有更新时，之前的同意会退回「待确认」、开关也跟着关掉 —— 这是有意的：内容变了就该重新问你一次，而不是拿旧的同意接着用。那一行会写着「告知内容有更新，打开可重新确认」，点开看一眼再决定就行。</p>
+      </li>
+      <li>
+        <h3>怎么把我的数据全部删掉？</h3>
+        <p>删除 App 即可清除本机的段落、进度和缓存。<strong>例外</strong>：一个随机生成的<strong>设备码</strong>存在系统钥匙串里，重装后仍然存在。它是一串随机字符，<strong>不包含任何和你本人有关的信息</strong>，只用来区分设备和限制每天的调用次数；<strong>App 内目前没有清除它的入口</strong>。</p>
+        <p>如果要删服务器上与这个设备码相关的记录，发邮件给我并附上设备码 —— 在「我的」页最下方点<strong>「复制」</strong>拿到完整的码（页面上显示的只有前 8 位）。用「给作者写信」也行，但<strong>设备码要自己粘进去</strong>（那封信里只带版本、机型、系统）——复制后 <strong>2 分钟内</strong>粘贴有效，过时了再点一次「复制」。<strong>提前说明</strong>：服务器上只有每天的调用次数计数，而它<strong>每天自动清零覆盖</strong>，所以你写信过来时多半已经不存在了；我会确认并回复你。</p>
+      </li>
+      <li>
+        <h3>我不想让内容发给第三方 AI，可以吗？</h3>
+        <p>可以。「我的 → 第三方服务」里把开关关掉，之后不再发送该类数据。关掉之后：段落照样能存能练（本机断句、没有中文翻译和自动标题），示范朗读改用系统声音，查词不可用，段落的小图标换成统一的分类图案，首页显示固定的问候语。完整说明见<a href="index.html">隐私政策</a>。</p>
+      </li>
+    </ul>
+
+    <h2>使用条款</h2>
+    <p>本 App 采用 Apple 标准最终用户许可协议：<a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms of Use (EULA)</a>。</p>
+
+    <h2>联系我们</h2>
+    <p>Bug、建议、删除或查询请求，都欢迎发邮件。<strong>装了 App 的话最省事</strong>：新版本里「我的」→<strong>「给作者写信」</strong>会替你起草好，App 版本、机型、系统版本已经写在正文里（都看得见，不想发可以删掉）。</p>
+    <p>从别处写信也行，麻烦带上：机型与 iOS 版本、App 版本（在 iPhone「设置 → 通用 → iPhone 储存空间 → 口语练习」里能看到）、以及你做了什么、屏幕上出现了哪句提示。</p>
+    <div class="mail"><a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a></div>
+  </div>
+
+  <!-- ─────────── English ─────────── -->
+  <div class="en">
+    <h1>Support — 口语练习 (Spoken English Practice)</h1>
+
+    <dl class="meta">
+      <dt>Developer</dt><dd>Independent developer</dd>
+      <dt>Contact</dt><dd><a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a></dd>
+      <dt>Response time</dt><dd>Within 7 days</dd>
+    </dl>
+
+    <div class="lede">
+      <p><strong>Check the questions below first</strong>; if that doesn't solve it, email me and I'll reply within 7 days. The app is free, requires <strong>no account or sign-in</strong>, and has no in-app purchases or subscriptions.</p>
+      <p style="margin-top:10px"><strong>Note:</strong> the app's interface is in Chinese only, so every menu path below is given in English with the <strong>exact on-screen Chinese in brackets</strong> — look for the bracketed text on your device.</p>
+    </div>
+
+    <h2>Three things to try first</h2>
+    <ul>
+      <li>Force-quit the app and open it again</li>
+      <li><em>Me (我的) → Permissions (权限设置)</em>: make sure <strong>Microphone</strong> (needed to read along) and <strong>Camera</strong> (needed to capture text from a photo) are allowed</li>
+      <li><em>Me (我的) → Third-party services (第三方服务)</em>: check the two entries <strong>“语音识别与朗读”</strong> (speech recognition &amp; read-aloud) and <strong>“整理、翻译与查词”</strong> (tidy-up, translation &amp; word lookup). They are <strong>not required</strong> — without them you can still save paragraphs, practise, and hear the demo; but <strong>reading along</strong> needs the first, and <strong>Chinese translation, auto titles and word lookup</strong> need the second</li>
+    </ul>
+
+    <h2>Recording and recognition</h2>
+    <ul class="qa" role="list">
+      <li>
+        <h3>I hold the microphone button and nothing happens — no text appears</h3>
+        <p>Usually microphone permission is missing, or “语音识别与朗读” hasn't been agreed to. For the first, go to <em>Me (我的) → Permissions (权限设置)</em>; for the second, <em>Me (我的) → Third-party services (第三方服务)</em>. If both are fine and it still fails, try somewhere quieter — recognition struggles in noisy places.</p>
+      </li>
+      <li>
+        <h3>“没听清，再试一次” (Didn't catch that, try again)</h3>
+        <p>This also appears when the <strong>network is flaky</strong> or the recognition service has a temporary error — <strong>it isn't necessarily about how you read</strong>. Tap “重试” (Retry) on the message. If it happens several times in a row, wait a moment or switch networks.</p>
+      </li>
+      <li>
+        <h3>“音频还没准备好，再试一次” (Audio isn't ready) or “引擎没有响应，再试一次” (Engine didn't respond)</h3>
+        <p>These mean recording <strong>never started</strong> — the system didn't hand the microphone over. Most common during or just after a phone call, or when another app is holding the audio session. Nothing to do with your reading; wait a few seconds and tap the microphone again.</p>
+      </li>
+      <li>
+        <h3>“录音被打断了” (Recording was interrupted), with a “再来一次” (Try again) button</h3>
+        <p>A call, an alarm or another app took the audio session. The app <strong>deliberately does not resume on its own</strong> (otherwise it would quietly be recording again when you come back from a call), so tap “再来一次” yourself.</p>
+      </li>
+      <li>
+        <h3>It stops mid-practice with “识别结束了，点麦克风继续” (Recognition ended — tap the mic to continue)</h3>
+        <p>The recognition connection dropped, or a single session hit its length limit. <strong>The repetitions you already completed are not lost</strong> — just tap the microphone and carry on. More likely on an unstable network.</p>
+      </li>
+      <li>
+        <h3>“语音服务暂时不可用，稍后再试” (Speech service temporarily unavailable)</h3>
+        <p>Either you've used a lot today (each device has a daily call limit), or the service is busy with many users at once. Try again a little later. The daily allowance resets at <strong>midnight Beijing time (UTC+8)</strong>, <strong>not</strong> midnight in your own time zone.</p>
+      </li>
+      <li>
+        <h3>“离线中，联网后再试” (Offline — try again when connected)</h3>
+        <p><strong>Reading along needs a connection</strong>, and that is what this message is about. Everything else still works offline: you can <strong>hear the demo</strong> (it switches to your iPhone's built-in system voice rather than the voice you chose), review, and add paragraphs (split on the device, just without a Chinese translation or an auto-generated title).</p>
+      </li>
+      <li>
+        <h3>I finished the sentence but the progress doesn't move on</h3>
+        <p>The rule is <strong>“read it through and it counts”</strong>, and it is deliberately lenient: a small number of missed words per sentence is allowed, and contractions or different ways of writing numbers still count. That allowance is small, though, and <strong>shorter sentences get less of it</strong> — so short sentences are the ones that stick.</p>
+        <p>One case is known to use up that allowance for nothing: <strong>a sentence starting with a Chinese pinyin given name</strong> (e.g. “Daming asked…”, in any capitalisation). You can still get through it — <strong>as long as every other word is clear</strong>, because you can't afford to miss a second one. So for a stuck sentence the thing that actually helps is to <strong>slow down and pronounce every word fully</strong>, not to re-read the whole sentence.</p>
+        <p>If it really won't pass, the paragraph detail page has <em>⋯ → Reset progress (重置进度)</em>, which starts that paragraph over (and clears its practice progress).</p>
+      </li>
+      <li>
+        <h3>Does it score my pronunciation?</h3>
+        <p><strong>No.</strong> The app only checks whether you got through the sentence. There is no scoring, no pronunciation correction and no intonation analysis — the point is to repeat a passage many times, not to hit a standard.</p>
+      </li>
+    </ul>
+
+    <h2>Demo read-aloud</h2>
+    <ul class="qa" role="list">
+      <li>
+        <h3>The demo button on the practice screen is greyed out</h3>
+        <p><strong>It is disabled while you are recording</strong> (recording and playback are mutually exclusive, so the speaker isn't picked up by the microphone). Release the record button and it comes back.</p>
+      </li>
+      <li>
+        <h3>I tap the demo button and hear nothing</h3>
+        <p>Check the <strong>silent switch</strong> on the side of your iPhone, the volume, and whether headphones or a Bluetooth device are connected.</p>
+      </li>
+      <li>
+        <h3>After changing the demo voice, every sentence takes longer and the cache got bigger</h3>
+        <p>That's expected: read-aloud audio is <strong>cached per voice</strong>, so changing voice means everything has to be synthesised again — the first play of each sentence is slower. The <strong>old voice's audio is not deleted automatically</strong> and still takes up space; clear it with <em>Me (我的) → Clear read-aloud cache (清除朗读缓存)</em>.</p>
+      </li>
+      <li>
+        <h3>The voice I picked reverted to the default</h3>
+        <p>When a voice is withdrawn on the server the app falls back to the default rather than losing the demo entirely. Pick another one in <em>Me (我的) → Demo voice (示范音色)</em>.</p>
+      </li>
+      <li>
+        <h3>Can I still hear the demo without agreeing to “语音识别与朗读”?</h3>
+        <p>Yes. Without consent the demo uses your <strong>iPhone's built-in system voice</strong> and no sentence is sent anywhere; you just can't record and read along.</p>
+      </li>
+      <li>
+        <h3>I want to free up some space</h3>
+        <p><em>Me (我的) → Clear read-aloud cache (清除朗读缓存)</em>. <strong>Your paragraphs and progress are untouched</strong> — it only deletes the stored audio, so the next read-aloud has to be synthesised again and takes a moment longer.</p>
+      </li>
+    </ul>
+
+    <h2>Adding paragraphs</h2>
+    <ul class="qa" role="list">
+      <li>
+        <h3>The text recognised from my photo has mistakes</h3>
+        <p>You can edit it directly on the results screen before saving. A flat page, even lighting, and filling the frame with the text all help a lot. <strong>Photos are processed on your device only and are never uploaded</strong> — but when you <strong>save</strong>, the recognised <strong>text</strong> is sent out for sentence splitting and translation, within the consent you've given (see “Your data”).</p>
+      </li>
+      <li>
+        <h3>A paragraph has no Chinese translation, or no title</h3>
+        <p>That happens when it was saved offline, or without consent for “整理、翻译与查词” (sentence splitting then runs on the device). To fix it, open that paragraph's detail page and choose <em>⋯ → Fill in Chinese (补上中文)</em>. <strong>Titles are not backfilled</strong> — a title is yours to edit, so there's no way to tell which ones are “missing”. Just write one in <em>⋯ → Edit text (编辑正文)</em>.</p>
+      </li>
+      <li>
+        <h3>Long-pressing a word doesn't look it up</h3>
+        <p>Word lookup needs consent for “整理、翻译与查词” and a network connection. There is also a <strong>daily limit</strong>, which resets at <strong>midnight Beijing time (UTC+8)</strong>. <strong>If you have just looked up a lot of words in quick succession</strong>, the same message can also mean short-term rate limiting — in that case a minute or two is usually enough, no need to wait for tomorrow.</p>
+      </li>
+      <li>
+        <h3>“没保存成功” (Couldn't save) or “进度没能保存” (Progress couldn't be saved)</h3>
+        <p>Most often your iPhone is <strong>out of storage</strong>. Free some space in <em>Settings → General → iPhone Storage</em> and try again. Worth taking seriously — when storage is full, a whole round of practice can fail to save.</p>
+      </li>
+      <li>
+        <h3>I deleted a paragraph by mistake</h3>
+        <p>Look in <em>Me (我的) → Recycle bin (回收站)</em>. Deleted paragraphs stay there for <strong>30 days</strong> and are then removed permanently; you can also remove them permanently yourself from the recycle bin.</p>
+      </li>
+    </ul>
+
+    <h2>Your data</h2>
+    <ul class="qa" role="list">
+      <li>
+        <h3>Where are my paragraphs and progress stored? Will I lose them on a new phone?</h3>
+        <p>Everything is stored <strong>on this device</strong>, and there is <strong>no cloud backup at the moment</strong>. After switching phones or deleting the app, that content does <strong>not</strong> come back and cannot be recovered.</p>
+        <p>To be precise: <strong>paragraphs are not uploaded for storage</strong>, but once you consent, your recordings and paragraph text are <strong>sent</strong> to service providers so those features can work — this app's own server is in <strong>Japan</strong>, and the speech recognition, read-aloud and large-language-model services are in <strong>mainland China</strong>. Full details are in the <a href="index.html">Privacy Policy</a>.</p>
+      </li>
+      <li>
+        <h3>I agreed to the third-party services — why did the switches turn themselves off?</h3>
+        <p>When the disclosure text is updated, your earlier consent goes back to “undecided” and the switch turns off with it. That is deliberate: if what you were told has changed, you should be asked again rather than have the old consent carried over. The row says “告知内容有更新，打开可重新确认” (the disclosure has been updated — open to confirm again); open it, read it, and decide.</p>
+      </li>
+      <li>
+        <h3>How do I delete all of my data?</h3>
+        <p>Deleting the app removes the paragraphs, progress and caches on your device. <strong>One exception</strong>: a randomly generated <strong>device code</strong> is stored in the system keychain and survives a reinstall. It is a random string that <strong>contains nothing about you personally</strong>, used only to tell devices apart and to cap daily calls; <strong>there is currently no in-app way to clear it</strong>.</p>
+        <p>To have the server-side records for that device code deleted, email me and include the code — tap <strong>“复制” (Copy)</strong> at the bottom of the <em>Me (我的)</em> page to get the full code (only the first 8 characters are shown on screen). Writing via <em>Write to the author (给作者写信)</em> works too, but you have to <strong>paste the device code in yourself</strong> (that draft carries only the version, device model and OS) — the copy stays on the clipboard for <strong>2 minutes</strong>, so tap “复制” again if it has expired. <strong>Up front</strong>: the server holds nothing but per-day call counters, and those <strong>reset and overwrite every day</strong>, so by the time you write there is usually nothing left; I'll confirm and reply either way.</p>
+      </li>
+      <li>
+        <h3>Can I use the app without sending anything to third-party AI services?</h3>
+        <p>Yes. Switch them off in <em>Me (我的) → Third-party services (第三方服务)</em> and no further data of that kind is sent. With them off: paragraphs can still be saved and practised (split on the device, without a Chinese translation or auto title), the demo uses the system voice, word lookup is unavailable, paragraph icons fall back to a shared category symbol, and the home screen shows a fixed greeting. Full details are in the <a href="index.html">Privacy Policy</a>.</p>
+      </li>
+    </ul>
+
+    <h2>Terms of Use</h2>
+    <p>This app uses Apple's standard End User License Agreement: <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms of Use (EULA)</a>.</p>
+
+    <h2>Contact</h2>
+    <p>Bug reports, suggestions, and deletion or access requests are all welcome. <strong>If you have the app, the easy way</strong> is <em>Me (我的) → Write to the author (给作者写信)</em>, available from the next version: it drafts the message for you, with the app version, device model and OS version already in the body (all visible — delete them if you would rather not send them).</p>
+    <p>Writing from anywhere else works too. Please include: your device model and iOS version, the app version (visible in <em>Settings → General → iPhone Storage → 口语练习</em>), what you did, and which message appeared on screen.</p>
+    <div class="mail"><a href="mailto:benjaminfaxpaper01@gmail.com">benjaminfaxpaper01@gmail.com</a></div>
+  </div>
+
+  <div class="foot">
+    <span class="zh"><a href="index.html">隐私政策</a> · 本页是「口语练习」App 的支持页。</span>
+    <span class="en"><a href="index.html">Privacy Policy</a> · This is the support page for the 口语练习 app.</span>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var doc = document.documentElement;
+    var zh = document.getElementById('btn-zh');
+    var en = document.getElementById('btn-en');
+    function set(lang) {
+      doc.setAttribute('data-lang', lang);
+      doc.lang = (lang === 'en') ? 'en' : 'zh-CN';
+      document.title = (lang === 'en') ? "口语练习 (Spoken English Practice) · Support" : "口语练习 · 支持";
+      zh.setAttribute('aria-pressed', String(lang === 'zh'));
+      en.setAttribute('aria-pressed', String(lang === 'en'));
+      // 和隐私政策页共用同一个键：在一页上选了语言，点到另一页还是那个语言
+      try { localStorage.setItem('vep-policy-lang', lang); } catch (e) { /* 隐私窗口 / 站点数据被禁：按默认中文渲染即可 */ }
+    }
+    zh.addEventListener('click', function () { set('zh'); });
+    en.addEventListener('click', function () { set('en'); });
+    set(doc.getAttribute('data-lang') === 'en' ? 'en' : 'zh');   // head 里已经定好，这里只同步按钮
+  })();
+</script>
+</body>
+</html>
